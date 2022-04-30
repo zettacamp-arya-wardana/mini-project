@@ -6,7 +6,7 @@ const dotEnv = require('dotenv');
 const resolvers = require('./resolvers');
 const typeDefs = require('./typeDefs');
 const connection = require('./connection');
-const { verifyUser } = require('./jwt/index');
+
 const { authMiddleware } = require('./middleware/index');
 const { makeExecutableSchema } = require('graphql-tools');
 const { applyMiddleware } = require('graphql-middleware');
