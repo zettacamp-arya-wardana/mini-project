@@ -1,0 +1,11 @@
+$lookup: {
+              from: 'users',
+              localField: 'created_by',
+              foreignField: '_id',
+              as: 'creator_name',
+            },
+
+			playlist_name: String
+      song_ids: [ID]
+      created_by: ID
+      collaborator_ids: [ID]

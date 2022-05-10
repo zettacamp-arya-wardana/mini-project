@@ -6,6 +6,7 @@ const dotEnv = require('dotenv');
 const resolvers = require('./resolvers');
 const typeDefs = require('./typeDefs');
 const connection = require('./connection');
+const { loaders } = require('./loaders/index');
 
 const { authMiddleware } = require('./middleware/index');
 const { makeExecutableSchema } = require('graphql-tools');
@@ -34,23 +35,11 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: (req) => ({
     req: req.req,
-    // await verifyUser(req);
-    // console.log('contetx run');
-    // return {
-    //   email: req.email,
-    // };
+    loaders: loaders(),
   }),
 });
 
-apolloServer.applyMiddleware({ app, path: '/graphql' });
-
-const PORT = process.env.PORT || 3000;
-
-app.use('/', (req, res, next) => {
-  res.send({ message: 'Hello' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on PORT: ${PORT}`);
-  console.log(`Graphql Endpoint: ${apolloServer.graphqlPath}`);
+apolloServer.start().then((res) => {
+  apolloServer.applyMiddleware({ app });
+  app.listen({ port: process.env.PORT || 4001 }, () => console.log('nice'));
 });
